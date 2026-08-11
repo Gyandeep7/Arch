@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles, Award } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import BeforeAfterSlider from './BeforeAfterSlider';
 import { useModern } from '../context/ModernContext';
 
@@ -11,7 +11,7 @@ export default function HeroVisualizer() {
       style={{ 
         position: 'relative', 
         minHeight: '100vh', 
-        padding: '160px 24px 80px 24px',
+        padding: 'clamp(110px, 15vh, 160px) 16px 60px 16px',
         overflow: 'hidden'
       }}
     >
@@ -22,8 +22,8 @@ export default function HeroVisualizer() {
           top: '20%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '600px',
-          height: '600px',
+          width: 'clamp(300px, 80vw, 600px)',
+          height: 'clamp(300px, 80vw, 600px)',
           borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 70%)',
           filter: 'blur(70px)',
@@ -35,96 +35,60 @@ export default function HeroVisualizer() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         
         {/* Editorial Badge */}
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 20px',
-              borderRadius: 'var(--radius-full)',
-              background: 'var(--accent-gold-glow)',
-              border: '1px solid var(--border-gold)',
-              color: 'var(--accent-gold)',
-              fontSize: '0.85rem',
-              fontWeight: '600',
-              letterSpacing: '1px',
-              textTransform: 'uppercase'
-            }}
-          >
-            <Sparkles size={16} />
-            <span>2026 Next-Gen Luxury Architectural Studio</span>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <div className="hero-editorial-badge">
+            <Sparkles size={14} />
+            <span>2026 Next-Gen Architectural Studio</span>
           </div>
         </div>
 
         {/* Title & Subtitle */}
-        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 40px auto' }}>
-          <h1 style={{ fontSize: 'clamp(3rem, 5.5vw, 5.2rem)', lineHeight: 1.08, marginBottom: '20px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 36px auto' }}>
+          <h1 className="hero-heading" style={{ fontSize: 'clamp(2.2rem, 6.5vw, 5.2rem)', lineHeight: 1.1, marginBottom: '18px' }}>
             Engineering Modern <br />
             <span className="text-gradient">Architectural Perfection.</span>
           </h1>
 
-          <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: '400' }}>
+          <p className="hero-subtext" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'var(--text-secondary)', lineHeight: 1.6, fontWeight: '400' }}>
             From high-altitude penthouse sky villas in Tribeca & Worli to minimalist coastal havens — Arch crafts bespoke spatial experiences designed for timeless elegance.
           </p>
         </div>
 
         {/* Interactive Before/After Renovation Slider Widget */}
-        <div style={{ marginBottom: '56px' }}>
+        <div style={{ marginBottom: '48px' }}>
           <BeforeAfterSlider />
-          <div style={{ textAlign: 'center', marginTop: '12px', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
+          <div style={{ textAlign: 'center', marginTop: '12px', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '0 8px' }}>
             💡 <strong style={{ color: 'var(--accent-gold)' }}>Interactive Visualizer:</strong> Drag the center handle left/right to reveal spatial transformation
           </div>
         </div>
 
         {/* Action CTAs & Quick Metrics */}
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '64px' }}>
-          <button className="btn-gold" onClick={() => openConsultation()} style={{ padding: '16px 36px', fontSize: '1rem' }}>
+        <div className="hero-actions">
+          <button className="btn-gold hero-btn" onClick={() => openConsultation()}>
             <span>Book Private Consultation</span>
-            <ArrowRight size={20} />
+            <ArrowRight size={18} />
           </button>
 
-          <a href="#calculator" className="btn-outline-gold" style={{ padding: '16px 36px', fontSize: '1rem', textDecoration: 'none' }}>
+          <a href="#calculator" className="btn-outline-gold hero-btn" style={{ textDecoration: 'none' }}>
             <span>Calculate Project Cost ({currency === 'USD' ? '$' : '₹'})</span>
           </a>
         </div>
 
         {/* Stats Grid */}
-        <div 
-          className="glass-panel" 
-          style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-            gap: '24px', 
-            padding: '32px 40px',
-            textAlign: 'center'
-          }}
-        >
-          <div>
-            <div style={{ fontSize: '2.4rem', fontFamily: 'var(--font-serif)', color: 'var(--accent-gold)', fontWeight: '700' }}>
-              140+
-            </div>
-            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              Bespoke Spaces Completed
-            </div>
+        <div className="glass-panel hero-stats-grid">
+          <div className="stat-card">
+            <div className="stat-number">140+</div>
+            <div className="stat-label">Bespoke Spaces Completed</div>
           </div>
 
-          <div style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '24px' }}>
-            <div style={{ fontSize: '2.4rem', fontFamily: 'var(--font-serif)', color: 'var(--accent-gold)', fontWeight: '700' }}>
-              {currency === 'USD' ? '$95M+' : '₹750 Cr+'}
-            </div>
-            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              Real Estate Value Enhanced
-            </div>
+          <div className="stat-card stat-card-border">
+            <div className="stat-number">{currency === 'USD' ? '$95M+' : '₹750 Cr+'}</div>
+            <div className="stat-label">Real Estate Value Enhanced</div>
           </div>
 
-          <div style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '24px' }}>
-            <div style={{ fontSize: '2.4rem', fontFamily: 'var(--font-serif)', color: 'var(--accent-gold)', fontWeight: '700' }}>
-              18
-            </div>
-            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              International Design Awards
-            </div>
+          <div className="stat-card stat-card-border">
+            <div className="stat-number">18</div>
+            <div className="stat-label">International Design Awards</div>
           </div>
         </div>
 

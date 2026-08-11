@@ -1,9 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MoveHorizontal, Sparkles } from 'lucide-react';
 
 export default function BeforeAfterSlider() {
   const [sliderPos, setSliderPos] = useState(50); // percentage 0 - 100
+  const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   const handleMove = (clientX) => {
     if (!containerRef.current) return;
@@ -17,7 +29,9 @@ export default function BeforeAfterSlider() {
 
   const handleMouseMove = (e) => handleMove(e.clientX);
   const handleTouchMove = (e) => {
-    if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX);
+    if (e.touches && e.touches[0]) {
+      handleMove(e.touches[0].clientX);
+    }
   };
 
   return (
@@ -25,16 +39,18 @@ export default function BeforeAfterSlider() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouchMove}
+      className="before-after-container"
       style={{
         position: 'relative',
         width: '100%',
-        height: '480px',
+        height: 'clamp(320px, 50vh, 480px)',
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
         border: '1px solid var(--border-gold)',
         boxShadow: 'var(--shadow-main)',
         cursor: 'ew-resize',
-        userSelect: 'none'
+        userSelect: 'none',
+        touchAction: 'none'
       }}
     >
       {/* "AFTER" Image (Full background) */}
@@ -43,27 +59,11 @@ export default function BeforeAfterSlider() {
         alt="Arch Transformed Luxury Penthouse"
         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
       />
-      <div 
-        style={{ 
-          position: 'absolute', 
-          top: '20px', 
-          right: '20px', 
-          background: 'rgba(7, 8, 10, 0.85)', 
-          backdropFilter: 'blur(8px)', 
-          padding: '6px 16px', 
-          borderRadius: 'var(--radius-full)', 
-          color: 'var(--accent-gold)', 
-          fontSize: '0.8rem', 
-          fontWeight: '700', 
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
-        }}
-      >
+
+      <div className="slider-badge slider-badge-after">
         <Sparkles size={14} />
-        <span>AFTER: ARCH BESPOKE TRANSFORMATION</span>
+        <span className="badge-full-text">AFTER: ARCH BESPOKE</span>
+        <span className="badge-short-text">AFTER</span>
       </div>
 
       {/* "BEFORE" Image (Clipped overlay) */}
@@ -81,25 +81,16 @@ export default function BeforeAfterSlider() {
         <img 
           src="/images/arch_before.jpg" 
           alt="Raw Unfinished Spatial Blueprint"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', maxWidth: 'none' }}
-        />
-        <div 
           style={{ 
-            position: 'absolute', 
-            top: '20px', 
-            left: '20px', 
-            background: 'rgba(7, 8, 10, 0.85)', 
-            backdropFilter: 'blur(8px)', 
-            padding: '6px 16px', 
-            borderRadius: 'var(--radius-full)', 
-            color: '#FFFFFF', 
-            fontSize: '0.8rem', 
-            fontWeight: '700', 
-            letterSpacing: '1px',
-            textTransform: 'uppercase'
+            width: containerWidth ? `${containerWidth}px` : '100vw', 
+            height: '100%', 
+            objectFit: 'cover', 
+            maxWidth: 'none' 
           }}
-        >
-          BEFORE: RAW SPATIAL CANVAS
+        />
+        <div className="slider-badge slider-badge-before">
+          <span className="badge-full-text">BEFORE: RAW CANVAS</span>
+          <span className="badge-short-text">BEFORE</span>
         </div>
       </div>
 
@@ -121,8 +112,8 @@ export default function BeforeAfterSlider() {
       >
         <div
           style={{
-            width: '44px',
-            height: '44px',
+            width: '40px',
+            height: '40px',
             borderRadius: '50%',
             background: 'var(--accent-gold)',
             color: '#07080A',
@@ -132,7 +123,7 @@ export default function BeforeAfterSlider() {
             boxShadow: '0 0 20px rgba(212, 175, 55, 0.6)'
           }}
         >
-          <MoveHorizontal size={20} strokeWidth={2.5} />
+          <MoveHorizontal size={18} strokeWidth={2.5} />
         </div>
       </div>
 
